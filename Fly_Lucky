@@ -13,6 +13,78 @@ local mini2 = Instance.new("TextButton")
 local menuFrame = Instance.new("Frame")
 local toggleMenuButton = Instance.new("TextButton")
 
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local Lighting = game:GetService("Lighting")
+
+local main = Instance.new("ScreenGui")
+main.Name = "FlyGUI"
+main.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+main.ResetOnSpawn = false
+
+local Frame = Instance.new("Frame")
+Frame.Parent = main
+Frame.BackgroundColor3 = Color3.fromRGB(163, 255, 137)
+Frame.BorderColor3 = Color3.fromRGB(103, 221, 213)
+Frame.Position = UDim2.new(0.1, 0, 0.38, 0)
+Frame.Size = UDim2.new(0, 190, 0, 57)
+
+local menuFrame = Instance.new("Frame")
+menuFrame.Parent = main
+menuFrame.Visible = false
+menuFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+menuFrame.Position = UDim2.new(0.1, 0, 0.1, 0)
+menuFrame.Size = UDim2.new(0, 190, 0, 200)
+
+local toggleMenuButton = Instance.new("TextButton")
+toggleMenuButton.Parent = Frame
+toggleMenuButton.BackgroundColor3 = Color3.fromRGB(255, 200, 0)
+toggleMenuButton.Size = UDim2.new(0, 45, 0, 28)
+toggleMenuButton.Position = UDim2.new(0, 0, 0, 30)
+toggleMenuButton.Font = Enum.Font.SourceSans
+toggleMenuButton.Text = "Menu"
+toggleMenuButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+toggleMenuButton.TextSize = 14
+
+local function toggleMenu()
+    menuFrame.Visible = not menuFrame.Visible
+end
+toggleMenuButton.MouseButton1Click:Connect(toggleMenu)
+
+local closeButton = Instance.new("TextButton")
+closeButton.Parent = Frame
+closeButton.BackgroundColor3 = Color3.fromRGB(225, 25, 0)
+closeButton.Size = UDim2.new(0, 45, 0, 28)
+closeButton.Text = "X"
+closeButton.Position = UDim2.new(0, 0, -1, 27)
+closeButton.TextSize = 30
+
+local mini = Instance.new("TextButton")
+mini.Parent = Frame
+mini.Text = "-"
+mini.Position = UDim2.new(0, 44, -1, 27)
+mini.Visible = true
+
+local mini2 = Instance.new("TextButton")
+mini2.Parent = Frame
+mini2.Text = "+"
+mini2.Position = UDim2.new(0, 44, -1, 57)
+mini2.Visible = false
+
+mini.MouseButton1Click:Connect(function()
+    Frame.Visible = false
+    mini.Visible = false
+    mini2.Visible = true
+end)
+
+mini2.MouseButton1Click:Connect(function()
+    Frame.Visible = true
+    mini.Visible = true
+    mini2.Visible = false
+end)
+
+Frame.Active = true
+Frame.Draggable = true
 main.Name = "main"
 main.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
