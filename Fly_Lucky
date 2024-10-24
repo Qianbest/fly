@@ -14,6 +14,12 @@ local toggleMenuButton = Instance.new("TextButton")
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
+local onof = Instance.new("TextButton")
+onof.Parent = frame
+onof.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+onof.Position = UDim2.new(0, 0, 1, 0)
+onof.Size = UDim2.new(0, 100, 0, 50)
+onof.Text = "On/Off"
 
 main.Name = "FlyGUI"
 main.Parent = player:WaitForChild("PlayerGui")
@@ -67,7 +73,7 @@ plusButton.Position = UDim2.new(0, 5, 0, 5)
 plusButton.Text = "Increase Speed"
 plusButton.MouseButton1Click:Connect(function()
     speedValue = math.min(speedValue + 1, 10)
-    speedLabel.Text = "Speed: " 
+    speedLabel.Text = "Speed: " .. tostring(speedValue)
 end)
 
 minusButton.Parent = menuFrame
@@ -76,7 +82,7 @@ minusButton.Position = UDim2.new(0, 5, 0, 60)
 minusButton.Text = "Decrease Speed"
 minusButton.MouseButton1Click:Connect(function()
     speedValue = math.max(speedValue - 1, 1)
-    speedLabel.Text = "Speed: " 
+    speedLabel.Text = "Speed: " .. tostring(speedValue)
 end)
 
 flyButton.Parent = frame
