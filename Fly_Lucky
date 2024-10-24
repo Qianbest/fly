@@ -89,10 +89,8 @@ local flying = false
 flyButton.MouseButton1Click:Connect(function()
     flying = not flying
     if flying then
-        -- Kích hoạt bay
         humanoid.PlatformStand = true
     else
-        -- Tắt bay
         humanoid.PlatformStand = false
     end
 end)
