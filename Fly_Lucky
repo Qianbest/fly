@@ -9,16 +9,27 @@ local speed = Instance.new("TextLabel")
 local mine = Instance.new("TextButton")
 local closebutton = Instance.new("TextButton")
 local mini = Instance.new("TextButton")
-local mini2 = Instance.new("TextButton") 
-
-MenuFrame.Parent = main
-MenuFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
-MenuFrame.Size = UDim2.new(0, 190, 0, 200)
-MenuFrame.Position = UDim2.new(0, 0, 0, 70)
-MenuFrame.Visible = false -- Start hidden
-
--- Create a button to toggle the menu
+local mini2 = Instance.new("TextButton")
+local menuFrame = Instance.new("Frame")
 local toggleMenuButton = Instance.new("TextButton")
+
+main.Name = "main"
+main.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+main.ResetOnSpawn = false
+
+Frame.Parent = main
+Frame.BackgroundColor3 = Color3.fromRGB(163, 255, 137)
+Frame.BorderColor3 = Color3.fromRGB(103, 221, 213)
+Frame.Position = UDim2.new(0.1, 0, 0.38, 0)
+Frame.Size = UDim2.new(0, 190, 0, 57)
+
+menuFrame.Parent = main
+menuFrame.Visible = false
+menuFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+menuFrame.Position = UDim2.new(0.1, 0, 0.1, 0)
+menuFrame.Size = UDim2.new(0, 190, 0, 200)
+
 toggleMenuButton.Parent = Frame
 toggleMenuButton.BackgroundColor3 = Color3.fromRGB(255, 200, 0)
 toggleMenuButton.Size = UDim2.new(0, 45, 0, 28)
@@ -27,16 +38,7 @@ toggleMenuButton.Font = Enum.Font.SourceSans
 toggleMenuButton.Text = "Menu"
 toggleMenuButton.TextColor3 = Color3.fromRGB(0, 0, 0)
 toggleMenuButton.TextSize = 14
-main.Name = "main"
-main.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-main.ResetOnSpawn = false 
 
-Frame.Parent = main
-Frame.BackgroundColor3 = Color3.fromRGB(163, 255, 137)
-Frame.BorderColor3 = Color3.fromRGB(103, 221, 213)
-Frame.Position = UDim2.new(0.100320168, 0, 0.379746825, 0)
-Frame.Size = UDim2.new(0, 190, 0, 57) 
 
 up.Name = "up"
 up.Parent = Frame
