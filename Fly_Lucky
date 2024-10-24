@@ -11,6 +11,22 @@ local closebutton = Instance.new("TextButton")
 local mini = Instance.new("TextButton")
 local mini2 = Instance.new("TextButton") 
 
+MenuFrame.Parent = main
+MenuFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+MenuFrame.Size = UDim2.new(0, 190, 0, 200)
+MenuFrame.Position = UDim2.new(0, 0, 0, 70)
+MenuFrame.Visible = false -- Start hidden
+
+-- Create a button to toggle the menu
+local toggleMenuButton = Instance.new("TextButton")
+toggleMenuButton.Parent = Frame
+toggleMenuButton.BackgroundColor3 = Color3.fromRGB(255, 200, 0)
+toggleMenuButton.Size = UDim2.new(0, 45, 0, 28)
+toggleMenuButton.Position = UDim2.new(0, 0, 0, 30)
+toggleMenuButton.Font = Enum.Font.SourceSans
+toggleMenuButton.Text = "Menu"
+toggleMenuButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+toggleMenuButton.TextSize = 14
 main.Name = "main"
 main.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -442,7 +458,23 @@ end
 end
 end
 end) 
+-- Function to toggle the menu
+local function toggleMenu()
+    MenuFrame.Visible = not MenuFrame.Visible
+end
 
+toggleMenuButton.MouseButton1Click:Connect(toggleMenu)
+
+-- Example of adding options to the MenuFrame
+local option1 = Instance.new("TextButton")
+option1.Parent = MenuFrame
+option1.BackgroundColor3 = Color3.fromRGB(100, 255, 100)
+option1.Size = UDim2.new(0, 180, 0, 50)
+option1.Position = UDim2.new(0, 5, 0, 5)
+option1.Font = Enum.Font.SourceSans
+option1.Text = "Option 1"
+option1.TextColor3 = Color3.fromRGB(0, 0, 0)
+option1.TextSize = 14
 closebutton.MouseButton1Click:Connect(function()
 main:Destroy()
 end) 
