@@ -1,30 +1,25 @@
 local main = Instance.new("ScreenGui")
-local Frame = Instance.new("Frame")
-local up = Instance.new("TextButton")
-local down = Instance.new("TextButton")
-local onof = Instance.new("TextButton")
-local TextLabel = Instance.new("TextLabel")
-local plus = Instance.new("TextButton")
-local speed = Instance.new("TextLabel")
-local mine = Instance.new("TextButton")
-local closebutton = Instance.new("TextButton")
-local mini = Instance.new("TextButton")
-local mini2 = Instance.new("TextButton")
+local frame = Instance.new("Frame")
+local toggleButton = Instance.new("TextButton")
+local closeButton = Instance.new("TextButton")
+local upButton = Instance.new("TextButton")
+local downButton = Instance.new("TextButton")
+local flyButton = Instance.new("TextButton")
+local plusButton = Instance.new("TextButton")
+local minusButton = Instance.new("TextButton")
+local speedLabel = Instance.new("TextLabel")
 local menuFrame = Instance.new("Frame")
 local toggleMenuButton = Instance.new("TextButton")
 
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-
-local player = Players.LocalPlayer
+local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
 
-local main = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 main.Name = "FlyGUI"
+main.Parent = player:WaitForChild("PlayerGui")
 main.ResetOnSpawn = false
 
-local frame = Instance.new("Frame", main)
+frame.Parent = main
 frame.BackgroundColor3 = Color3.fromRGB(163, 255, 137)
 frame.BorderColor3 = Color3.fromRGB(103, 221, 213)
 frame.Position = UDim2.new(0.1, 0, 0.38, 0)
@@ -32,93 +27,77 @@ frame.Size = UDim2.new(0, 190, 0, 57)
 frame.Active = true
 frame.Draggable = true
 
-local toggleButton = Instance.new("TextButton", frame)
-toggleButton.BackgroundColor3 = Color3.fromRGB(255, 200, 0)
-toggleButton.Size = UDim2.new(0, 45, 0, 28)
-toggleButton.Position = UDim2.new(0, 0, 0, 30)
-toggleButton.Text = "Menu"
-toggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+toggleMenuButton.Parent = frame
+toggleMenuButton.BackgroundColor3 = Color3.fromRGB(255, 200, 0)
+toggleMenuButton.Size = UDim2.new(0, 45, 0, 28)
+toggleMenuButton.Position = UDim2.new(0, 0, 0, 30)
+toggleMenuButton.Text = "Menu"
+toggleMenuButton.TextColor3 = Color3.fromRGB(0, 0, 0)
 
-local menuFrame = Instance.new("Frame", main)
-menuFrame.Visible = false
-menuFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
-menuFrame.Position = UDim2.new(0.1, 0, 0.1, 0)
-menuFrame.Size = UDim2.new(0, 190, 0, 200)
-
-local closeButton = Instance.new("TextButton", frame)
+closeButton.Parent = frame
 closeButton.BackgroundColor3 = Color3.fromRGB(225, 25, 0)
 closeButton.Size = UDim2.new(0, 45, 0, 28)
 closeButton.Text = "X"
 closeButton.Position = UDim2.new(0, 0, -1, 27)
 
+menuFrame.Parent = main
+menuFrame.Visible = false
+menuFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+menuFrame.Position = UDim2.new(0.1, 0, 0.1, 0)
+menuFrame.Size = UDim2.new(0, 190, 0, 200)
+
+speedLabel.Parent = frame
+speedLabel.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
+speedLabel.Position = UDim2.new(0.47, 0, 0.5, 0)
+speedLabel.Size = UDim2.new(0, 44, 0, 28)
+speedLabel.Text = "Speed: 1"
 local speedValue = 1
-local speedTextLabel = Instance.new("TextLabel", frame)
-speedTextLabel.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
-speedTextLabel.Position = UDim2.new(0.47, 0, 0.5, 0)
-speedTextLabel.Size = UDim2.new(0, 44, 0, 28)
-speedTextLabel.Text = "Speed: " .. speedValue
 
 local function toggleMenu()
     menuFrame.Visible = not menuFrame.Visible
 end
 
-toggleButton.MouseButton1Click:Connect(toggleMenu)
+toggleMenuButton.MouseButton1Click:Connect(toggleMenu)
+
 closeButton.MouseButton1Click:Connect(function() main:Destroy() end)
 
-local flying = false
-local bodyVelocity, bodyGyro
-
-local function fly()
-    if flying then
-        humanoid.PlatformStand = true
-        bodyVelocity = Instance.new("BodyVelocity", character.HumanoidRootPart)
-        bodyVelocity.MaxForce = Vector3.new(9e9, 9e9, 9e9)
-
-        bodyGyro = Instance.new("BodyGyro", character.HumanoidRootPart)
-        bodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
-
-        RunService.RenderStepped:Connect(function()
-            if flying then
-                bodyVelocity.Velocity = character.HumanoidRootPart.CFrame.LookVector * speedValue * 50
-                bodyGyro.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, workspace.CurrentCamera.CFrame.Position + workspace.CurrentCamera.CFrame.LookVector)
-            else
-                bodyVelocity:Destroy()
-                bodyGyro:Destroy()
-                humanoid.PlatformStand = false
-            end
-        end)
-    end
-end
-
-local flyToggleButton = Instance.new("TextButton", frame)
-flyToggleButton.BackgroundColor3 = Color3.fromRGB(255, 249, 74)
-flyToggleButton.Position = UDim2.new(0.7, 0, 0.5, 0)
-flyToggleButton.Size = UDim2.new(0, 56, 0, 28)
-flyToggleButton.Text = "Fly"
-
-flyToggleButton.MouseButton1Click:Connect(function()
-    flying = not flying
-    fly()
+plusButton.Parent = menuFrame
+plusButton.Size = UDim2.new(0, 180, 0, 50)
+plusButton.Position = UDim2.new(0, 5, 0, 5)
+plusButton.Text = "Increase Speed"
+plusButton.MouseButton1Click:Connect(function()
+    speedValue = math.min(speedValue + 1, 10)
+    speedLabel.Text = "Speed: " .. speedValue
 end)
 
-local function updateSpeed(increment)
-    speedValue = math.clamp(speedValue + increment, 1, 10)
-    speedTextLabel.Text = "Speed: " .. speedValue
-end
+minusButton.Parent = menuFrame
+minusButton.Size = UDim2.new(0, 180, 0, 50)
+minusButton.Position = UDim2.new(0, 5, 0, 60)
+minusButton.Text = "Decrease Speed"
+minusButton.MouseButton1Click:Connect(function()
+    speedValue = math.max(speedValue - 1, 1)
+    speedLabel.Text = "Speed: " .. speedValue
+end)
 
-local increaseSpeedButton = Instance.new("TextButton", menuFrame)
-increaseSpeedButton.Size = UDim2.new(0, 180, 0, 50)
-increaseSpeedButton.Position = UDim2.new(0, 5, 0, 5)
-increaseSpeedButton.Text = "Increase Speed"
-increaseSpeedButton.MouseButton1Click:Connect(function() updateSpeed(1) end)
+flyButton.Parent = frame
+flyButton.BackgroundColor3 = Color3.fromRGB(255, 249, 74)
+flyButton.Position = UDim2.new(0.7, 0, 0.5, 0)
+flyButton.Size = UDim2.new(0, 56, 0, 28)
+flyButton.Text = "Fly"
+local flying = false
 
-local decreaseSpeedButton = Instance.new("TextButton", menuFrame)
-decreaseSpeedButton.Size = UDim2.new(0, 180, 0, 50)
-decreaseSpeedButton.Position = UDim2.new(0, 5, 0, 60)
-decreaseSpeedButton.Text = "Decrease Speed"
-decreaseSpeedButton.MouseButton1Click:Connect(function() updateSpeed(-1) end)
+flyButton.MouseButton1Click:Connect(function()
+    flying = not flying
+    if flying then
+        -- Kích hoạt bay
+        humanoid.PlatformStand = true
+    else
+        -- Tắt bay
+        humanoid.PlatformStand = false
+    end
+end)
 
-local upButton = Instance.new("TextButton", frame)
+upButton.Parent = frame
 upButton.BackgroundColor3 = Color3.fromRGB(79, 255, 152)
 upButton.Size = UDim2.new(0, 44, 0, 28)
 upButton.Text = "UP"
@@ -126,7 +105,7 @@ upButton.MouseButton1Click:Connect(function()
     character.HumanoidRootPart.CFrame = character.HumanoidRootPart.CFrame + Vector3.new(0, 1, 0)
 end)
 
-local downButton = Instance.new("TextButton", frame)
+downButton.Parent = frame
 downButton.BackgroundColor3 = Color3.fromRGB(215, 255, 121)
 downButton.Position = UDim2.new(0, 0, 0.5, 0)
 downButton.Size = UDim2.new(0, 44, 0, 28)
@@ -134,6 +113,7 @@ downButton.Text = "DOWN"
 downButton.MouseButton1Click:Connect(function()
     character.HumanoidRootPart.CFrame = character.HumanoidRootPart.CFrame + Vector3.new(0, -1, 0)
 end)
+
 
 game:GetService("StarterGui"):SetCore("SendNotification", {
     Title = "Fly GUI V3";
@@ -363,7 +343,7 @@ end)
 
 local dis 
 
-down.MouseButton1Down:connect(function()
+.MouseButton1:connect(function()
 dis = down.MouseEnter:connect(function()
 while dis do
 wait()
