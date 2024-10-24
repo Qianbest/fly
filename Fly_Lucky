@@ -10,6 +10,8 @@ local minusButton = Instance.new("TextButton")
 local speedLabel = Instance.new("TextLabel")
 local menuFrame = Instance.new("Frame")
 local toggleMenuButton = Instance.new("TextButton")
+local mini = Instance.new("TextButton") -- Khởi tạo nút mini
+local mini2 = Instance.new("TextButton") -- Khởi tạo nút mini2
 
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
@@ -118,14 +120,12 @@ downButton.MouseButton1Click:Connect(function()
     character.HumanoidRootPart.CFrame = character.HumanoidRootPart.CFrame + Vector3.new(0, -1, 0)
 end)
 
-
 game:GetService("StarterGui"):SetCore("SendNotification", {
     Title = "Fly GUI V3";
     Text = "By me_ozone and Quandale The Dinglish XII#3550";
     Icon = "rbxthumb://type=Asset&id=5107182114&w=150&h=150";
     Duration = 5;
 })
-
 
 Frame.Active = true -- main = gui
 Frame.Draggable = true 
