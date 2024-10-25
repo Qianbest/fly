@@ -17,10 +17,10 @@ main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 main.ResetOnSpawn = false 
 
 Frame.Parent = main
-Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255) 
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30) 
 Frame.BorderColor3 = Color3.fromRGB(0, 0, 0) 
 Frame.Position = UDim2.new(0.1, 0, 0.4, 0)
-Frame.Size = UDim2.new(0, 200, 0, 300) 
+Frame.Size = UDim2.new(0, 220, 0, 350) 
 UICorner.Parent = Frame 
 UICorner.CornerRadius = UDim.new(0, 10) 
 
@@ -30,11 +30,11 @@ local function createButton(name, parent, position, text, bgColor, textColor)
     button.Parent = parent
     button.BackgroundColor3 = bgColor
     button.Position = position
-    button.Size = UDim2.new(0, 180, 0, 30) 
+    button.Size = UDim2.new(0, 200, 0, 40) 
     button.Font = Enum.Font.GothamBold
     button.Text = text
     button.TextColor3 = textColor
-    button.TextSize = 18
+    button.TextSize = 20
     button.TextScaled = true 
     button.AutoButtonColor = false 
 
@@ -53,19 +53,19 @@ local function createButton(name, parent, position, text, bgColor, textColor)
 end
 
 up = createButton("up", Frame, UDim2.new(0, 10, 0, 10), "UP", Color3.fromRGB(79, 255, 152), Color3.fromRGB(0, 0, 0))
-down = createButton("down", Frame, UDim2.new(0, 10, 0, 50), "DOWN", Color3.fromRGB(215, 255, 121), Color3.fromRGB(0, 0, 0))
-onof = createButton("onof", Frame, UDim2.new(0, 10, 0, 90), "FLY", Color3.fromRGB(255, 249, 74), Color3.fromRGB(0, 0, 0))
-plus = createButton("plus", Frame, UDim2.new(0, 10, 0, 130), "+", Color3.fromRGB(133,145, 255), Color3.fromRGB(0, 0, 0))
-mine = createButton("mine", Frame, UDim2.new(0, 10, 0, 170), "-", Color3.fromRGB(123, 255, 247), Color3.fromRGB(0, 0, 0))
+down = createButton("down", Frame, UDim2.new(0, 10, 0, 60), "DOWN", Color3.fromRGB(215, 255, 121), Color3.fromRGB(0, 0, 0))
+onof = createButton("onof", Frame, UDim2.new(0, 10, 0, 110), "FLY", Color3.fromRGB(255, 249, 74), Color3.fromRGB(0, 0, 0))
+plus = createButton("plus", Frame, UDim2.new(0, 10, 0, 160), "+", Color3.fromRGB(133, 145, 255), Color3.fromRGB(0, 0, 0))
+mine = createButton("mine", Frame, UDim2.new(0, 10, 0, 210), "-", Color3.fromRGB(123, 255, 247), Color3.fromRGB(0, 0, 0))
 
 speed.Parent = Frame
 speed.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
-speed.Position = UDim2.new(0, 10, 0, 210)
-speed.Size = UDim2.new(0, 180, 0, 30)
+speed.Position = UDim2.new(0, 10, 0, 260)
+speed.Size = UDim2.new(0, 200, 0, 40)
 speed.Font = Enum.Font.GothamBold
 speed.Text = "Speed: 1"
 speed.TextColor3 = Color3.fromRGB(255, 255, 255)
-speed.TextSize = 18
+speed.TextSize = 20
 speed.TextScaled = true
 UICorner = Instance.new("UICorner", speed)
 UICorner.CornerRadius = UDim.new(0, 5)
@@ -73,8 +73,8 @@ UICorner.CornerRadius = UDim.new(0, 5)
 closebutton.Name = "Close"
 closebutton.Parent = Frame
 closebutton.BackgroundColor3 = Color3.fromRGB(225, 25, 0)
-closebutton.Size = UDim2.new(0, 40, 0, 30)
-closebutton.Position = UDim2.new(0.85,0, 0, 0, 10)
+closebutton.Size = UDim2.new(0, 40, 0, 40)
+closebutton.Position = UDim2.new(0, 0.85, 0, 0)
 closebutton.Font = Enum.Font.GothamBold
 closebutton.Text = "X"
 closebutton.TextSize = 20
@@ -85,7 +85,7 @@ mini.Name = "minimize"
 mini.Parent = Frame
 mini.BackgroundColor3 = Color3.fromRGB(192, 150, 230)
 mini.Font = Enum.Font.GothamBold
-mini.Size = UDim2.new(0, 40, 0, 30)
+mini.Size = UDim2.new(0, 40, 0, 40)
 mini.Position = UDim2.new(0.75, 0, 0, 10)
 mini.Text = "-"
 mini.TextSize = 20
@@ -96,7 +96,7 @@ mini2.Name = "minimize2"
 mini2.Parent = Frame
 mini2.BackgroundColor3 = Color3.fromRGB(192, 150, 230)
 mini2.Font = Enum.Font.GothamBold
-mini2.Size = UDim2.new(0, 40, 0, 30)
+mini2.Size = UDim2.new(0, 40, 0, 40)
 mini2.Position = UDim2.new(0.75, 0, 0, 10)
 mini2.Text = "+"
 mini2.TextSize = 20
@@ -197,7 +197,6 @@ up.MouseButton1Down:Connect(function()
         local player = game.Players.LocalPlayer
         local char = player.Character or player.CharacterAdded:Wait()
         local torso = char:FindFirstChild("HumanoidRootPart")
-
         torso.CFrame = torso.CFrame + Vector3.new(0, 1, 0) 
     end
 end)
@@ -356,7 +355,7 @@ else
     local UpperTorso = plr.Character:WaitForChild("UpperTorso")
     local flying = true
     local ctrl = {f = 0, b = 0, l = 0, r = 0}
-    local lastctrl = {f = 0, b = 0, l = 0, r = 0}
+    local lastctrl = {f = 0, b = 0, l = 0,    r = 0}
     local maxspeed = 50
     local speed = 0
 
@@ -432,3 +431,10 @@ game:GetService("User InputService").InputEnded:Connect(function(input)
     end
 end)
 
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+    flying = false
+end)
+
+onof.MouseButton1Click:Connect(function()
+    flying = false
+end)
