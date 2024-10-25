@@ -1,5 +1,3 @@
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/weakhoes/Roblox-UI-Libs/refs/heads/main/2%20Informant.wtf%20Lib%20(FIXED)/informant.wtf%20Lib%20Example.lua"))()
-
 local main = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
 local up = Instance.new("TextButton")
@@ -12,144 +10,243 @@ local mine = Instance.new("TextButton")
 local closebutton = Instance.new("TextButton")
 local mini = Instance.new("TextButton")
 local mini2 = Instance.new("TextButton")
-local UICornerFrame = Instance.new("UICorner")
-
-local flying = false
-local speedValue = 1
+local UICorner = Instance.new("UICorner")
 
 main.Name = "main"
 main.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-main.ResetOnSpawn = false
+main.ResetOnSpawn = false 
 
--- Tạo Frame chính và làm tròn góc
 Frame.Parent = main
-Frame.BackgroundColor3 = Color3.fromRGB(163, 255, 137)
-Frame.BorderColor3 = Color3.fromRGB(103, 221, 213)
-Frame.Position = UDim2.new(0.35, 0, 0.3, 0)
-Frame.Size = UDim2.new(0, 200, 0, 180)
-UICornerFrame.CornerRadius = UDim.new(0, 12)
-UICornerFrame.Parent = Frame
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Màu nền sáng
+Frame.BorderColor3 = Color3.fromRGB(0, 0, 0) -- Đường viền đen
+Frame.Position = UDim2.new(0.1, 0, 0.4, 0)
+Frame.Size = UDim2.new(0, 200, 0, 300) -- Tăng kích thước khung
+UICorner.Parent = Frame -- Thêm UICorner
+UICorner.CornerRadius = UDim.new(0, 10) -- Bo góc
 
--- Thiết lập nút
-local function styleButton(button, bgColor, text, position, size)
-    button.Parent = Frame
+-- Thiết lập các nút
+local function createButton(name, parent, position, text, bgColor, textColor)
+    local button = Instance.new("TextButton")
+    button.Name = name
+    button.Parent = parent
     button.BackgroundColor3 = bgColor
-    button.Size = size
     button.Position = position
-    button.Font = Enum.Font.SourceSans
+    button.Size = UDim2.new(0, 180, 0, 30) -- Kích thước đồng đều
+    button.Font = Enum.Font.GothamBold
     button.Text = text
-    button.TextColor3 = Color3.fromRGB(0, 0, 0)
-    button.TextSize = 14.000
-    local UICorner = Instance.new("UICorner")
-    UICorner.CornerRadius = UDim.new(0, 8)
-    UICorner.Parent = button
+    button.TextColor3 = textColor
+    button.TextSize = 18
+    button.TextScaled = true
+    button.AutoButtonColor = false -- Tắt hiệu ứng tự động đổi màu
+
+    local UICorner = Instance.new("UICorner", button) -- Thêm bo góc cho nút
+    UICorner.CornerRadius = UDim.new(0, 5)
+
+    -- Thêm hiệu ứng hover
+    button.MouseEnter:Connect(function()
+        button.BackgroundColor3 = button.BackgroundColor3:Lerp(Color3.fromRGB(200, 200, 200), 0.5) -- Màu sáng hơn khi hover
+    end)
+
+    button.MouseLeave:Connect(function()
+        button.BackgroundColor3 = bgColor -- Trở lại màu gốc
+    end)
+
+    return button
 end
 
-styleButton(up, Color3.fromRGB(79, 255, 152), "UP", UDim2.new(0.1, 0, 0.25, 0), UDim2.new(0, 60, 0, 30))
-styleButton(down, Color3.fromRGB(215, 255, 121), "DOWN", UDim2.new(0.1, 0, 0.55, 0), UDim2.new(0, 60, 0, 30))
-styleButton(onof, Color3.fromRGB(255, 249, 74), "fly", UDim2.new(0.7, 0, 0.55, 0), UDim2.new(0, 60, 0, 30))
-styleButton(plus, Color3.fromRGB(133, 145, 255), "+", UDim2.new(0.4, 0, 0.25, 0), UDim2.new(0, 40, 0, 30))
-styleButton(mine, Color3.fromRGB(123, 255, 247), "-", UDim2.new(0.4, 0, 0.55, 0), UDim2.new(0, 40, 0, 30))
+-- Tạo các nút
+up = createButton("up", Frame, UDim2.new(0, 10, 0, 10), "UP", Color3.fromRGB(79, 255, 152), Color3.fromRGB(0, 0, 0))
+down = createButton("down", Frame, UDim2.new(0, 10, 0, 50), "DOWN", Color3.fromRGB(215, 255, 121), Color3.fromRGB(0, 0, 0))
+onof = createButton("onof", Frame, UDim2.new(0, 10, 0, 90), "FLY", Color3.fromRGB(255, 249, 74), Color3.fromRGB(0, 0, 0))
+plus = createButton("plus", Frame, UDim2.new(0, 10, 0, 130), "+", Color3.fromRGB(133,145, 255), Color3.fromRGB(0, 0, 0))
+mine = createButton("mine", Frame, UDim2.new(0, 10, 0, 170), "-", Color3.fromRGB(123, 255, 247), Color3.fromRGB(0, 0, 0))
 
--- Label hiển thị tốc độ
-speed.Name = "speed"
+-- Tạo TextLabel cho tốc độ
 speed.Parent = Frame
 speed.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
-speed.Position = UDim2.new(0.4, 0, 0.4, 0)
-speed.Size = UDim2.new(0, 40, 0, 30)
-speed.Font = Enum.Font.SourceSans
-speed.Text = tostring(speedValue)
-speed.TextColor3 = Color3.fromRGB(0, 0, 0)
+speed.Position = UDim2.new(0, 10, 0, 210)
+speed.Size = UDim2.new(0, 180, 0, 30)
+speed.Font = Enum.Font.GothamBold
+speed.Text = "Speed: 1"
+speed.TextColor3 = Color3.fromRGB(255, 255, 255)
+speed.TextSize = 18
 speed.TextScaled = true
-speed.TextSize = 14.000
-speed.TextWrapped = true
+UICorner = Instance.new("UICorner", speed)
+UICorner.CornerRadius = UDim.new(0, 5)
 
--- Label hiển thị "MAIN"
-TextLabel.Parent = Frame
-TextLabel.BackgroundColor3 = Color3.fromRGB(242, 60, 255)
-TextLabel.Position = UDim2.new(0.3, 0, 0, 0)
-TextLabel.Size = UDim2.new(0, 100, 0, 30)
-TextLabel.Font = Enum.Font.SourceSans
-TextLabel.Text = "MAIN"
-TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
-TextLabel.TextScaled = true
-TextLabel.TextWrapped = true
-local UICornerTextLabel = Instance.new("UICorner")
-UICornerTextLabel.CornerRadius = UDim.new(0, 8)
-UICornerTextLabel.Parent = TextLabel
-
--- Close button
+-- Tạo nút đóng
 closebutton.Name = "Close"
 closebutton.Parent = Frame
 closebutton.BackgroundColor3 = Color3.fromRGB(225, 25, 0)
-closebutton.Font = Enum.Font.SourceSans
-closebutton.Size = UDim2.new(0, 30, 0, 30)
+closebutton.Size = UDim2.new(0, 40, 0, 30)
+closebutton.Position = UDim2.new(0.85, 0, 0, 10)
+closebutton.Font = Enum.Font.GothamBold
 closebutton.Text = "X"
-closebutton.TextSize = 18
-closebutton.Position = UDim2.new(0.85, 0, 0, 0)
+closebutton.TextSize = 20
+UICorner = Instance.new("UICorner", closebutton)
+UICorner.CornerRadius = UDim.new(0, 5)
+
+-- Tạo nút thu nhỏ
+mini.Name = "minimize"
+mini.Parent = Frame
+mini.BackgroundColor3 = Color3.fromRGB(192, 150, 230)
+mini.Font = Enum.Font.GothamBold
+mini.Size = UDim2.new(0, 40, 0, 30)
+mini.Position = UDim2.new(0.75, 0, 0, 10)
+mini.Text = "-"
+mini.TextSize = 20
+UICorner = Instance.new("UICorner", mini)
+UICorner.CornerRadius = UDim.new(0, 5)
+
+-- Tạo nút mở lại
+mini2.Name = "minimize2"
+mini2.Parent = Frame
+mini2.BackgroundColor3 = Color3.fromRGB(192, 150, 230)
+mini2.Font = Enum.Font.GothamBold
+mini2.Size = UDim2.new(0, 40, 0, 30)
+mini2.Position = UDim2.new(0.75, 0, 0, 10)
+mini2.Text = "+"
+mini2.TextSize = 20
+mini2.Visible = false
+UICorner = Instance.new("UICorner", mini2)
+UICorner.CornerRadius = UDim.new(0, 5)
+
+-- Đặt tốc độ mặc định
+speeds = 1 
+
+-- Thêm các sự kiện cho nút
 closebutton.MouseButton1Click:Connect(function()
     main:Destroy()
 end)
 
--- Tính năng của nút tăng và giảm tốc độ
-plus.MouseButton1Click:Connect(function()
-    speedValue = speedValue + 1
-    speed.Text = tostring(speedValue)
+mini.MouseButton1Click:Connect(function()
+    up.Visible = false
+    down.Visible = false
+    onof.Visible = false
+    plus.Visible = false
+    mine.Visible = false
+    speed.Visible = false
+    mini.Visible = false
+    mini2.Visible = true
+    Frame.BackgroundTransparency = 0.5 -- Làm mờ khung
 end)
 
-mine.MouseButton1Click:Connect(function()
-    speedValue = math.max(1, speedValue - 1)
-    speed.Text = tostring(speedValue)
+mini2.MouseButton1Click:Connect(function()
+    up.Visible = true
+    down.Visible = true
+    onof.Visible = true
+    plus.Visible = true
+    mine.Visible = true
+    speed.Visible = true
+    mini.Visible = true
+    mini2.Visible = false
+    Frame.BackgroundTransparency = 0 -- Khôi phục độ trong suốt
 end)
 
--- Tính năng bay (fly)
-onof.MouseButton1Click:Connect(function()
-    flying = not flying
-    if flying then
-        onof.Text = "stop"
-        print("Bắt đầu bay với tốc độ:", speedValue)
+-- Thêm sự kiện cho các nút điều khiển tốc độ
+plus.MouseButton1Down:Connect(function()
+    speeds = speeds + 1
+    speed.Text = "Speed: " .. speeds
+end)
+
+mine.MouseButton1Down:Connect(function()
+    if speeds > 1 then
+        speeds = speeds - 1
+        speed.Text = "Speed: " .. speeds
     else
-        onof.Text = "fly"
-        print("Dừng bay")
+        speed.Text = "Speed cannot be less than 1"
+        wait(1)
+        speed.Text = "Speed: " .. speeds
     end
 end)
 
--- Tính năng UP và DOWN
-up.MouseButton1Click:Connect(function()
-    print("Di chuyển lên với tốc độ:", speedValue)
-end)
+-- Thêm các sự kiện cho các nút di chuyển
+-- (Phần này cần được thêm vào phần sự kiện di chuyển của bạn)
 
-down.MouseButton1Click:Connect(function()
-    print("Di chuyển xuống với tốc độ:", speedValue)
-end)
+-- Hoàn tất GUI
+game:GetService("StarterGui"):SetCore
+-- Gửi thông báo khi GUI được khởi động
+game:GetService("StarterGui"):SetCore("SendNotification", { 
+    Title = "Fly GUI V3";
+    Text = "By Quan Developer";
+    Icon = "rbxthumb://type=Asset&id=12718791305&w=150&h=150";
+    Duration = 5; 
+})
 
--- Tính năng kéo thả Frame
-local dragging = false
-local dragStart, startPos
+-- Thiết lập Frame để có thể kéo
+Frame.Active = true
+Frame.Draggable = true
 
-Frame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = true
-        dragStart = input.Position
-        startPos = Frame.Position
+-- Biến để theo dõi trạng thái bay
+local flying = false
 
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
+-- Sự kiện cho nút FLY
+onof.MouseButton1Down:Connect(function()
+    flying = not flying -- Đảo ngược trạng thái bay
+    if flying then
+        onof.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Đổi màu khi đang bay
+        -- Bắt đầu bay
+        local player = game.Players.LocalPlayer
+        local char = player.Character or player.CharacterAdded:Wait()
+        local humanoid = char:FindFirstChildOfClass("Humanoid")
+        local torso = char:FindFirstChild("HumanoidRootPart")
+
+        local bg = Instance.new("BodyGyro", torso)
+        bg.P = 9e4
+        bg.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+        bg.CFrame = torso.CFrame
+
+        local bv = Instance.new("BodyVelocity", torso)
+        bv.Velocity = Vector3.new(0, 0, 0)
+        bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+
+        -- Vòng lặp bay
+        while flying do
+            wait()
+            bv.Velocity = Vector3.new(0, speeds, 0) -- Di chuyển lên trên với tốc độ
+            bg.CFrame = workspace.CurrentCamera.CFrame -- Giữ cho hướng nhìn
+        end
+
+        -- Dọn dẹp sau khi không còn bay
+        bg:Destroy()
+        bv:Destroy()
+    else
+        onof.BackgroundColor3 = Color3.fromRGB(255, 249, 74) -- Đổi lại màu khi không bay
     end
 end)
 
-Frame.InputChanged:Connect(function(input)
-    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-        local delta = input.Position - dragStart
-        Frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+-- Sự kiện cho nút UP
+up.MouseButton1Down:Connect(function()
+    if flying then
+        local player = game.Players.LocalPlayer
+        local char = player.Character or player.CharacterAdded:Wait()
+        local torso = char:FindFirstChild("HumanoidRootPart")
+
+        torso.CFrame = torso.CFrame + Vector3.new(0, 1, 0) -- Di chuyển lên 1 đơn vị
     end
 end)
 
+-- Sự kiện cho nút DOWN
+down.MouseButton1Down:Connect(function()
+    if flying then
+        local player = game.Players.LocalPlayer
+        local char = player.Character or player.CharacterAdded:Wait()
+        local torso = char:FindFirstChild("HumanoidRootPart")
 
+        torso.CFrame = torso.CFrame + Vector3.new(0, -1, 0) -- Di chuyển xuống 1 đơn vị
+    end
+end)
+
+-- Theo dõi khi người chơi chết và reset trạng thái
+game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
+    wait(0.7)
+    flying = false
+    onof.BackgroundColor3 = Color3.fromRGB(255, 249, 74) -- Đổi lại màu khi respawn
+end)
+
+-- Kết thúc mã
+print("Fly GUI đã được khởi động thành công!")
 speeds = 1 
 
 local speaker = game:GetService("Players").LocalPlayer 
