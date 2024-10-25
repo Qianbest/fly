@@ -11,7 +11,6 @@ local closebutton = Instance.new("TextButton")
 local mini = Instance.new("TextButton")
 local mini2 = Instance.new("TextButton")
 local UICornerFrame = Instance.new("UICorner")
-local UICornerButton = Instance.new("UICorner")
 
 local flying = false
 local speedValue = 1
@@ -21,11 +20,12 @@ main.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 main.ResetOnSpawn = false
 
+-- Tạo Frame chính và làm tròn góc
 Frame.Parent = main
 Frame.BackgroundColor3 = Color3.fromRGB(163, 255, 137)
 Frame.BorderColor3 = Color3.fromRGB(103, 221, 213)
 Frame.Position = UDim2.new(0.35, 0, 0.3, 0)
-Frame.Size = UDim2.new(0, 200, 0, 150)
+Frame.Size = UDim2.new(0, 200, 0, 180)
 UICornerFrame.CornerRadius = UDim.new(0, 12)
 UICornerFrame.Parent = Frame
 
@@ -44,18 +44,18 @@ local function styleButton(button, bgColor, text, position, size)
     UICorner.Parent = button
 end
 
-styleButton(up, Color3.fromRGB(79, 255, 152), "UP", UDim2.new(0.05, 0, 0.2, 0), UDim2.new(0, 50, 0, 30))
-styleButton(down, Color3.fromRGB(215, 255, 121), "DOWN", UDim2.new(0.05, 0, 0.6, 0), UDim2.new(0, 50, 0, 30))
-styleButton(onof, Color3.fromRGB(255, 249, 74), "fly", UDim2.new(0.75, 0, 0.6, 0), UDim2.new(0, 50, 0, 30))
-styleButton(plus, Color3.fromRGB(133, 145, 255), "+", UDim2.new(0.25, 0, 0.2, 0), UDim2.new(0, 50, 0, 30))
-styleButton(mine, Color3.fromRGB(123, 255, 247), "-", UDim2.new(0.25, 0, 0.6, 0), UDim2.new(0, 50, 0, 30))
+styleButton(up, Color3.fromRGB(79, 255, 152), "UP", UDim2.new(0.1, 0, 0.25, 0), UDim2.new(0, 60, 0, 30))
+styleButton(down, Color3.fromRGB(215, 255, 121), "DOWN", UDim2.new(0.1, 0, 0.55, 0), UDim2.new(0, 60, 0, 30))
+styleButton(onof, Color3.fromRGB(255, 249, 74), "fly", UDim2.new(0.7, 0, 0.55, 0), UDim2.new(0, 60, 0, 30))
+styleButton(plus, Color3.fromRGB(133, 145, 255), "+", UDim2.new(0.4, 0, 0.25, 0), UDim2.new(0, 40, 0, 30))
+styleButton(mine, Color3.fromRGB(123, 255, 247), "-", UDim2.new(0.4, 0, 0.55, 0), UDim2.new(0, 40, 0, 30))
 
 -- Label hiển thị tốc độ
 speed.Name = "speed"
 speed.Parent = Frame
 speed.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
-speed.Position = UDim2.new(0.5, -20, 0.6, 0)
-speed.Size = UDim2.new(0, 44, 0, 28)
+speed.Position = UDim2.new(0.4, 0, 0.4, 0)
+speed.Size = UDim2.new(0, 40, 0, 30)
 speed.Font = Enum.Font.SourceSans
 speed.Text = tostring(speedValue)
 speed.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -66,7 +66,7 @@ speed.TextWrapped = true
 -- Label hiển thị "MAIN"
 TextLabel.Parent = Frame
 TextLabel.BackgroundColor3 = Color3.fromRGB(242, 60, 255)
-TextLabel.Position = UDim2.new(0.5, -50, 0, 0)
+TextLabel.Position = UDim2.new(0.3, 0, 0, 0)
 TextLabel.Size = UDim2.new(0, 100, 0, 30)
 TextLabel.Font = Enum.Font.SourceSans
 TextLabel.Text = "MAIN"
@@ -85,7 +85,7 @@ closebutton.Font = Enum.Font.SourceSans
 closebutton.Size = UDim2.new(0, 30, 0, 30)
 closebutton.Text = "X"
 closebutton.TextSize = 18
-closebutton.Position = UDim2.new(0.9, -5, 0, 5)
+closebutton.Position = UDim2.new(0.85, 0, 0, 0)
 closebutton.MouseButton1Click:Connect(function()
     main:Destroy()
 end)
@@ -120,6 +120,31 @@ end)
 
 down.MouseButton1Click:Connect(function()
     print("Di chuyển xuống với tốc độ:", speedValue)
+end)
+
+-- Tính năng kéo thả Frame
+local dragging = false
+local dragStart, startPos
+
+Frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = Frame.Position
+
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+Frame.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        Frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
 end)
 
 
